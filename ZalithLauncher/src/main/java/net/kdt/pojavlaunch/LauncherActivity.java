@@ -695,10 +695,22 @@ public class LauncherActivity extends BaseActivity {
 
         preLaunch(LauncherActivity.this, version);
     }
-
     private boolean checkModernRendererRequirement(Version version) {
-        JMinecraftVersionList.Version versionInfo = Tools.getVersionInfo(version);
-        boolean requiresModernRenderer = requiresModernRenderer(versionInfo);
+        JMinecraftVersionList.Version versionInfo;
+        boolean requiresModernRenderer;
+
+        try {
+            versionInfo = Tools.getVersionInfo(version);
+            requiresModernRenderer = requiresModernRenderer(versionInfo);
+        } catch (Throwable t) {
+            Logger.appendToLog(
+                    "Modern renderer gate [LauncherActivity]: failed to resolve version info for "
+                            + version.getVersionName()
+                            + ", allowing launch to continue. Error: " + t
+            );
+            Logging.e(TAG, "Failed to resolve version info for renderer gate", t);
+            return true;
+        }
 
         Logger.appendToLog(
                 "Modern renderer gate [LauncherActivity]: version.id="
