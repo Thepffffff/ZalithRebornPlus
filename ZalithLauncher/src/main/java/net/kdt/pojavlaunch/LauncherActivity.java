@@ -686,13 +686,16 @@ public class LauncherActivity extends BaseActivity {
     }
 
     private void continueLaunchIfModernRendererReady(Version version) {
-        PluginLoader.refreshAllPlugins(this);
+        /*PluginLoader.refreshAllPlugins(this);
         Renderers.reloadRenderers(this, version.getRenderer(), false);
 
         if (!checkModernRendererRequirement(version)) {
             return;
         }
 
+        preLaunch(LauncherActivity.this, version);*/
+        PluginLoader.refreshAllPlugins(this);
+        Renderers.reloadRenderers(this, version.getRenderer(), false);
         preLaunch(LauncherActivity.this, version);
     }
     private boolean checkModernRendererRequirement(Version version) {
@@ -792,9 +795,13 @@ public class LauncherActivity extends BaseActivity {
         return displayName.contains("mobile glues")
                 || displayName.contains("ltw")
                 || displayName.contains("krypton")
+                || displayName.contains("vulkan zink")
                 || uniqueIdentifier.contains("mobileglues")
                 || uniqueIdentifier.contains("ltw")
-                || uniqueIdentifier.contains("krypton");
+                || uniqueIdentifier.contains("krypton")
+                || uniqueIdentifier.contains("vulkan_zink")
+                || uniqueIdentifier.contains("vulkan-zink")
+                || uniqueIdentifier.contains("zink");
     }
 
     private boolean hasSupportedModernRendererAvailable() {
@@ -811,6 +818,14 @@ public class LauncherActivity extends BaseActivity {
         String rendererUniqueIdentifier = version.getRenderer();
         if (rendererUniqueIdentifier == null || rendererUniqueIdentifier.trim().isEmpty()) {
             return false;
+        }
+
+        String rendererLower = rendererUniqueIdentifier.toLowerCase();
+
+        if (rendererLower.contains("vulkan_zink")
+                || rendererLower.contains("vulkan-zink")
+                || rendererLower.contains("zink")) {
+            return true;
         }
 
         for (RendererPlugin rendererPlugin : RendererPluginManager.getRendererList()) {
@@ -838,7 +853,7 @@ public class LauncherActivity extends BaseActivity {
         String message =
                 "This Minecraft version needs a compatible modern renderer before launch.\n\n"
                         + "No compatible renderer was detected in the renderer list.\n\n"
-                        + "Supported examples include LTW, Mobile Glues, and Krypton.\n\n"
+                        + "Supported examples include LTW, Mobile Glues, Vulkan Zink, and Krypton.\\n\\n"
                         + "Recommended download:\n"
                         + MOBILE_GLUES_URL;
 
