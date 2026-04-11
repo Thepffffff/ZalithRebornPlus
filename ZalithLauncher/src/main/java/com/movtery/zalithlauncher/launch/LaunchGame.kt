@@ -408,53 +408,6 @@ object LaunchGame {
         }
     }
 
-    private fun patchOptionsToOpenGL(gameDir: File) {
-        val optionsFile = File(gameDir, "options.txt")
-        Logger.appendToLog("GraphicsBackend: target options file = ${optionsFile.absolutePath}")
-
-        val original = if (optionsFile.exists()) {
-            runCatching { optionsFile.readText() }.getOrDefault("")
-        } else {
-            optionsFile.parentFile?.mkdirs()
-            ""
-        }
-
-        val updated = when {
-            original.contains("""preferredGraphicsBackend:"vulkan"""") -> {
-                original.replace(
-                    """preferredGraphicsBackend:"vulkan"""",
-                    """preferredGraphicsBackend:"opengl""""
-                )
-            }
-
-            Regex("""(?m)^preferredGraphicsBackend:.*$""").containsMatchIn(original) -> {
-                original.replace(
-                    Regex("""(?m)^preferredGraphicsBackend:.*$"""),
-                    """preferredGraphicsBackend:"opengl""""
-                )
-            }
-
-            original.isBlank() -> {
-                """preferredGraphicsBackend:"opengl"""" + "\n"
-            }
-
-            original.endsWith("\n") -> {
-                original + """preferredGraphicsBackend:"opengl"""" + "\n"
-            }
-
-            else -> {
-                original + "\n" + """preferredGraphicsBackend:"opengl"""" + "\n"
-            }
-        }
-
-        runCatching {
-            optionsFile.writeText(updated)
-        }.onSuccess {
-            Logger.appendToLog("GraphicsBackend: options.txt patched to OpenGL successfully")
-        }.onFailure { e ->
-            Logger.appendToLog("GraphicsBackend: failed to patch options.txt: ${e.message}")
-        }
-    }
     private fun is26_2OrNewer(versionName: String): Boolean {
         return Regex("""^26\.(2|[3-9]|\d{2,}).*""").matches(versionName)
     }
