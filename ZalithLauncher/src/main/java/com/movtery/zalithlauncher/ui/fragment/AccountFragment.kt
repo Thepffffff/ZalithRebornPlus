@@ -190,8 +190,16 @@ class AccountFragment : FragmentWithAnim(R.layout.fragment_account), View.OnClic
                                         LocalAccountUtils.saveReminders(checked)
                                         login()
                                     },
-                                    getString(message) + getString(R.string.account_purchase_minecraft_account_tip),
-                                    R.string.account_no_microsoft_account_continue
+                                    if (message == R.string.account_no_microsoft_account_local) {
+                                        getString(R.string.account_local_account_warning_ack)
+                                    } else {
+                                        getString(message) + getString(R.string.account_purchase_minecraft_account_tip)
+                                    },
+                                    if (message == R.string.account_no_microsoft_account_local) {
+                                        R.string.action_create_anyway
+                                    } else {
+                                        R.string.account_no_microsoft_account_continue
+                                    }
                                 )
                             }
                         }
