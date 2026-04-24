@@ -328,6 +328,12 @@
     <string name="xerr_not_available">Xbox Live is not available in your country/region</string>
     <string name="minecraft_not_owned">Minecraft profile not found</string>
     <string name="no_minecraft_purchase">Please ensure you have purchased Minecraft, log in to your account on https://minecraft.net/ and try again</string>
+    <string name="account_local_account_warning_ack">
+      Offline accounts are NOT and will NEVER be officially supported by Mojang/Microsoft.\n\n
+      By continuing, you acknowledge this may violate standard terms of service of Mojang/Microsoft.\n
+      Official multiplayer and account sync will not work.
+    </string>
+    <string name="action_create_anyway">Create Anyway</string>
     <!-- Jre -->
     <string name="install_select_jre_environment">Select JRE Environment</string>
     <string name="install_recommend_use_jre8">Within the execution environment, please try to use JRE 8 to ensure stability</string>
